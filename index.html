@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kwathu Hotel – Feel at Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:   #1a3d2b;
+      --forest-mid: #245c3e;
+      --gold:     #c8973a;
+      --gold-lt:  #e5b96a;
+      --cream:    #faf6ef;
+      --white:    #ffffff;
+      --gray:     #f4f1eb;
+      --text:     #1c1c1c;
+      --text-mid: #4a4a4a;
+      --text-lt:  #7a7a7a;
+      --radius:   14px;
+      --shadow:   0 8px 40px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+    /* ─── NAVBAR ──────────────────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 6%;
+      background: transparent;
+      transition: background .4s, padding .4s, box-shadow .4s;
+    }
+    #navbar.scrolled {
+      background: var(--forest);
+      padding: 14px 6%;
+      box-shadow: 0 4px 24px rgba(0,0,0,.25);
+    }
+    .nav-logo {
+      font-size: 1.75rem; font-weight: 800; color: var(--white);
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex; align-items: center; gap: 2.2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,.85); text-decoration: none;
+      font-size: .88rem; font-weight: 500; letter-spacing: .03em;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .btn-nav {
+      background: var(--gold); color: var(--white);
+      border: none; padding: 10px 26px; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-size: .85rem; font-weight: 600;
+      cursor: pointer; letter-spacing: .04em; transition: background .25s, transform .2s;
+      text-decoration: none;
+    }
+    .btn-nav:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger i { color: var(--white); font-size: 1.4rem; }
+
+    /* mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--forest); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--white); text-decoration: none; font-size: 1.5rem; font-weight: 600;
+      transition: color .25s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute; top: 24px; right: 6%;
+      background: none; border: none; cursor: pointer;
+    }
+    .mobile-close i { color: var(--white); font-size: 1.6rem; }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+    #hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center;
+      background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(10,30,20,.78) 0%, rgba(10,30,20,.45) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 0 6%; max-width: 700px;
+      animation: fadeUp .9s ease both;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200,151,58,.22); border: 1px solid var(--gold);
+      color: var(--gold-lt); font-size: .78rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 1.4rem;
+    }
+    .hero-content h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem); font-weight: 800;
+      color: var(--white); line-height: 1.15; margin-bottom: 1.2rem;
+    }
+    .hero-content h1 span { color: var(--gold); }
+    .hero-content p {
+      color: rgba(255,255,255,.8); font-size: 1.05rem; font-weight: 300;
+      line-height: 1.7; margin-bottom: 2.2rem; max-width: 520px;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--white);
+      padding: 14px 36px; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-size: .92rem; font-weight: 700;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .25s, transform .2s, box-shadow .25s;
+      box-shadow: 0 6px 24px rgba(200,151,58,.5);
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-3px); box-shadow: 0 10px 32px rgba(200,151,58,.55); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: 14px 36px; border-radius: 50px; border: 2px solid rgba(255,255,255,.55);
+      font-family: 'Poppins', sans-serif; font-size: .92rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: background .25s, border-color .25s, transform .2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.12); border-color: var(--white); transform: translateY(-3px); }
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      z-index: 2; text-align: center;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll i { color: rgba(255,255,255,.6); font-size: 1.4rem; }
+
+    /* ─── SECTION COMMON ──────────────────────────────────── */
+    section { padding: 90px 6%; }
+    .sec-label {
+      display: inline-block; color: var(--gold); font-size: .78rem;
+      font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .sec-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+      color: var(--forest); line-height: 1.2; margin-bottom: 1rem;
+    }
+    .sec-sub {
+      color: var(--text-mid); font-weight: 300; font-size: 1rem;
+      line-height: 1.7; max-width: 540px;
+    }
+
+    /* ─── ABOUT ───────────────────────────────────────────── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .about-img-wrap { position: relative; border-radius: var(--radius); overflow: hidden; }
+    .about-img-wrap img { width: 100%; height: 440px; object-fit: cover; display: block; }
+    .about-badge-img {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--forest); color: var(--white);
+      padding: 20px 24px; border-radius: var(--radius);
+      text-align: center; box-shadow: var(--shadow);
+    }
+    .about-badge-img .num { font-size: 2.4rem; font-weight: 800; color: var(--gold); line-height: 1; }
+    .about-badge-img .lbl { font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+    .about-text { }
+    .about-text .sec-sub { max-width: 100%; }
+    .about-text p { margin-top: 1rem; color: var(--text-mid); font-weight: 300; line-height: 1.8; }
+    .btn-ghost {
+      display: inline-block; margin-top: 2rem;
+      color: var(--forest); font-weight: 700; font-size: .9rem;
+      text-decoration: none; border-bottom: 2px solid var(--gold);
+      padding-bottom: 3px; transition: color .25s;
+    }
+    .btn-ghost:hover { color: var(--gold); }
+
+    /* ─── ROOMS ───────────────────────────────────────────── */
+    #rooms { background: var(--gray); }
+    .rooms-header { margin-bottom: 3rem; }
+    .rooms-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem;
+    }
+    .room-card {
+      background: var(--white); border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0,0,0,.07);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .room-card:hover { transform: translateY(-8px); box-shadow: 0 16px 50px rgba(0,0,0,.14); }
+    .room-card img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform .4s; }
+    .room-card:hover img { transform: scale(1.05); }
+    .room-card-body { padding: 1.5rem; }
+    .room-card-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--forest); margin-bottom: .4rem; }
+    .room-card-body p { font-size: .85rem; color: var(--text-mid); font-weight: 300; line-height: 1.6; margin-bottom: 1rem; }
+    .room-feats { display: flex; gap: 1rem; margin-bottom: 1.2rem; }
+    .room-feats span { font-size: .78rem; color: var(--text-lt); }
+    .room-feats i { color: var(--gold); margin-right: 4px; }
+    .room-footer { display: flex; align-items: center; justify-content: space-between; }
+    .room-price { font-size: 1.1rem; font-weight: 800; color: var(--forest); }
+    .room-price small { font-size: .72rem; font-weight: 400; color: var(--text-lt); }
+    .btn-sm {
+      background: var(--forest); color: var(--white);
+      padding: 9px 20px; border-radius: 50px; font-size: .8rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .25s, transform .2s;
+    }
+    .btn-sm:hover { background: var(--gold); transform: translateY(-2px); }
+
+    /* ─── AMENITIES ───────────────────────────────────────── */
+    #amenities { background: var(--white); }
+    .amen-header { text-align: center; margin-bottom: 3.5rem; }
+    .amen-header .sec-sub { margin: 0 auto; }
+    .amen-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem;
+    }
+    .amen-card {
+      text-align: center; padding: 2rem 1rem;
+      border: 1px solid #e8e2d8; border-radius: var(--radius);
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    .amen-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,.09); border-color: var(--gold); }
+    .amen-icon {
+      width: 58px; height: 58px; background: var(--forest);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .amen-icon i { color: var(--gold); font-size: 1.3rem; }
+    .amen-card h4 { font-size: .9rem; font-weight: 700; color: var(--forest); }
+    .amen-card p { font-size: .78rem; color: var(--text-lt); font-weight: 300; margin-top: .3rem; }
+
+    /* ─── WHY US ──────────────────────────────────────────── */
+    #whyus { background: var(--forest); }
+    .whyus-header { text-align: center; margin-bottom: 3.5rem; }
+    .whyus-header .sec-label { color: var(--gold-lt); }
+    .whyus-header .sec-title { color: var(--white); }
+    .whyus-header .sec-sub { color: rgba(255,255,255,.65); margin: 0 auto; }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;
+    }
+    .why-card {
+      padding: 2.2rem 2rem;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      transition: background .3s, transform .3s;
+    }
+    .why-card:hover { background: rgba(200,151,58,.14); transform: translateY(-6px); }
+    .why-num { font-size: 2.8rem; font-weight: 900; color: rgba(200,151,58,.25); line-height: 1; margin-bottom: .8rem; }
+    .why-icon { font-size: 1.8rem; color: var(--gold); margin-bottom: .8rem; }
+    .why-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+    .why-card p { font-size: .83rem; color: rgba(255,255,255,.6); font-weight: 300; line-height: 1.7; }
+
+    /* ─── GALLERY ─────────────────────────────────────────── */
+    #gallery { background: var(--gray); }
+    .gallery-header { text-align: center; margin-bottom: 3rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 220px 220px;
+      gap: 1rem;
+    }
+    .g-item { border-radius: var(--radius); overflow: hidden; position: relative; }
+    .g-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
+    .g-item:hover img { transform: scale(1.08); }
+    .g-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .g-overlay {
+      position: absolute; inset: 0; background: rgba(26,61,43,.55);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .3s;
+    }
+    .g-item:hover .g-overlay { opacity: 1; }
+    .g-overlay i { color: var(--white); font-size: 1.8rem; }
+    .gallery-cta { text-align: center; margin-top: 2.5rem; }
+
+    /* ─── TESTIMONIALS ────────────────────────────────────── */
+    #testimonials { background: var(--white); }
+    .testi-header { text-align: center; margin-bottom: 3rem; }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
+    }
+    .testi-card {
+      background: var(--cream); border-radius: var(--radius);
+      padding: 2rem; border-left: 4px solid var(--gold);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .testi-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .stars { color: var(--gold); font-size: .9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-card p { font-size: .9rem; color: var(--text-mid); font-weight: 300; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem; }
+    .testi-author { display: flex; align-items: center; gap: .9rem; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--forest); color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+    }
+    .testi-author-info strong { display: block; font-size: .88rem; font-weight: 700; color: var(--forest); }
+    .testi-author-info span { font-size: .75rem; color: var(--text-lt); }
+
+    /* ─── CTA BAND ────────────────────────────────────────── */
+    #cta-band {
+      background: linear-gradient(135deg, var(--forest) 0%, #0e2419 100%);
+      text-align: center; padding: 80px 6%;
+      position: relative; overflow: hidden;
+    }
+    #cta-band::before {
+      content: ''; position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=1600&auto=format&fit=crop') center/cover no-repeat;
+      opacity: .1;
+    }
+    .cta-content { position: relative; z-index: 1; }
+    .cta-content h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: var(--white); margin-bottom: 1rem; }
+    .cta-content h2 span { color: var(--gold); }
+    .cta-content p { color: rgba(255,255,255,.7); font-weight: 300; margin-bottom: 2.2rem; font-size: 1rem; }
+
+    /* ─── CONTACT ─────────────────────────────────────────── */
+    #contact { background: var(--gray); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .contact-info h2 { font-size: 1.6rem; font-weight: 800; color: var(--forest); margin-bottom: 1rem; }
+    .contact-info p { color: var(--text-mid); font-weight: 300; line-height: 1.7; margin-bottom: 2rem; }
+    .contact-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-list li { display: flex; align-items: flex-start; gap: 1rem; }
+    .c-icon {
+      width: 44px; height: 44px; min-width: 44px; background: var(--forest);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .c-icon i { color: var(--gold); font-size: 1rem; }
+    .c-detail strong { display: block; font-size: .82rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: .06em; }
+    .c-detail span { font-size: .88rem; color: var(--text-mid); font-weight: 300; }
+    .map-placeholder {
+      border-radius: var(--radius); overflow: hidden; height: 320px;
+      background: #d8d0c4; position: relative;
+    }
+    .map-placeholder iframe { width: 100%; height: 100%; border: 0; }
+    .map-label {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--forest-mid), var(--forest));
+      flex-direction: column; gap: .6rem;
+    }
+    .map-label i { font-size: 2.4rem; color: var(--gold); }
+    .map-label span { color: rgba(255,255,255,.8); font-size: .9rem; font-weight: 500; }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: #0c1f15; color: rgba(255,255,255,.7);
+      padding: 60px 6% 30px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem;
+    }
+    .footer-brand .nav-logo { display: block; margin-bottom: 1rem; font-size: 1.5rem; }
+    .footer-brand p { font-size: .85rem; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,.55); }
+    .socials { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .soc-link {
+      width: 38px; height: 38px; background: rgba(255,255,255,.08);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.7); text-decoration: none;
+      transition: background .25s, color .25s;
+    }
+    .soc-link:hover { background: var(--gold); color: var(--white); }
+    .footer-col h4 { color: var(--white); font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.4rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col a { color: rgba(255,255,255,.55); text-decoration: none; font-size: .85rem; font-weight: 300; transition: color .25s; }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: .8rem; color: rgba(255,255,255,.35); font-weight: 300; }
+
+    /* ─── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-img-wrap img { height: 300px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .g-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: span 2; }
+    }
+    @media (max-width: 680px) {
+      section { padding: 70px 5%; }
+      .nav-links, .btn-nav { display: none; }
+      .hamburger { display: block; }
+      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .g-item:nth-child(1) { grid-column: span 1; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: span 1; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-outline { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Kw<span>athu</span></a>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#amenities">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#cta-band" class="btn-nav">Book Now</a>
+  <button class="hamburger" id="ham" aria-label="Open menu">
+    <i class="fas fa-bars"></i>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <a href="#hero" class="mob-link">Home</a>
+  <a href="#rooms" class="mob-link">Rooms</a>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#amenities" class="mob-link">Services</a>
+  <a href="#contact" class="mob-link">Contact</a>
+  <a href="#cta-band" class="btn-primary mob-link" style="margin-top:.5rem">Book Now</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge"><i class="fas fa-star" style="margin-right:6px;"></i>Lilongwe's Finest Stay</span>
+    <h1>Feel at Home<br>at <span>Kwathu</span></h1>
+    <p>Where luxury meets warmth. Discover comfort, elegance, and authentic Malawian hospitality in the heart of Lilongwe.</p>
+    <div class="hero-btns">
+      <a href="#cta-band" class="btn-primary">Book Now</a>
+      <a href="#rooms" class="btn-outline">View Rooms</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900&auto=format&fit=crop" alt="Kwathu Hotel interior" loading="lazy"/>
+      <div class="about-badge-img">
+        <div class="num">12+</div>
+        <div class="lbl">Years of<br>Excellence</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <span class="sec-label">Our Story</span>
+      <h2 class="sec-title">A Place You'll<br>Always Call Home</h2>
+      <p class="sec-sub">Kwathu — meaning "ours" in Chichewa — was born from a simple belief: every guest deserves to feel truly at home.</p>
+      <p>Nestled in the heart of Lilongwe, Kwathu Hotel blends contemporary comfort with the rich warmth of Malawian culture. From the moment you step through our doors, you're welcomed not just as a guest, but as family. We take pride in our attentive service, beautifully appointed rooms, and a genuine passion for hospitality that has defined us for over a decade.</p>
+      <a href="#amenities" class="btn-ghost">Discover Our Story &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROOMS ═══ -->
+<section id="rooms">
+  <div class="rooms-header reveal">
+    <span class="sec-label">Accommodations</span>
+    <h2 class="sec-title">Our Rooms &amp; Suites</h2>
+    <p class="sec-sub">Each room is a sanctuary — thoughtfully designed for rest, privacy, and pure comfort.</p>
+  </div>
+  <div class="rooms-grid">
+    <div class="room-card reveal">
+      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700&auto=format&fit=crop" alt="Deluxe Room" loading="lazy"/>
+      <div class="room-card-body">
+        <h3>Deluxe Room</h3>
+        <p>Spacious and elegantly furnished with garden or pool views, perfect for a relaxing stay.</p>
+        <div class="room-feats">
+          <span><i class="fas fa-bed"></i>King Bed</span>
+          <span><i class="fas fa-wifi"></i>Free WiFi</span>
+          <span><i class="fas fa-bath"></i>En-Suite</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price">MWK 45,000 <small>/ night</small></div>
+          <a href="#cta-band" class="btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="room-card reveal">
+      <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=700&auto=format&fit=crop" alt="Executive Suite" loading="lazy"/>
+      <div class="room-card-body">
+        <h3>Executive Suite</h3>
+        <p>A premium suite with a separate lounge, premium amenities, and panoramic city views.</p>
+        <div class="room-feats">
+          <span><i class="fas fa-bed"></i>King Bed</span>
+          <span><i class="fas fa-wifi"></i>Free WiFi</span>
+          <span><i class="fas fa-bath"></i>Jacuzzi</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price">MWK 85,000 <small>/ night</small></div>
+          <a href="#cta-band" class="btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="room-card reveal">
+      <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=700&auto=format&fit=crop" alt="Standard Room" loading="lazy"/>
+      <div class="room-card-body">
+        <h3>Standard Room</h3>
+        <p>Clean, cosy, and comfortable — ideal for business travellers or short getaways.</p>
+        <div class="room-feats">
+          <span><i class="fas fa-bed"></i>Queen Bed</span>
+          <span><i class="fas fa-wifi"></i>Free WiFi</span>
+          <span><i class="fas fa-bath"></i>En-Suite</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price">MWK 28,000 <small>/ night</small></div>
+          <a href="#cta-band" class="btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="room-card reveal">
+      <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=700&auto=format&fit=crop" alt="Presidential Suite" loading="lazy"/>
+      <div class="room-card-body">
+        <h3>Presidential Suite</h3>
+        <p>The pinnacle of luxury — a full suite with private terrace, butler service, and exclusive access.</p>
+        <div class="room-feats">
+          <span><i class="fas fa-bed"></i>King Bed</span>
+          <span><i class="fas fa-wifi"></i>Free WiFi</span>
+          <span><i class="fas fa-bath"></i>Private Pool</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price">MWK 150,000 <small>/ night</small></div>
+          <a href="#cta-band" class="btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AMENITIES ═══ -->
+<section id="amenities">
+  <div class="amen-header reveal">
+    <span class="sec-label">What We Offer</span>
+    <h2 class="sec-title">Hotel Amenities</h2>
+    <p class="sec-sub">Everything you need for an unforgettable stay — all under one roof.</p>
+  </div>
+  <div class="amen-grid">
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-wifi"></i></div><h4>Free WiFi</h4><p>High-speed internet throughout the hotel</p></div>
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-utensils"></i></div><h4>Restaurant</h4><p>Local &amp; international cuisine daily</p></div>
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-parking"></i></div><h4>Free Parking</h4><p>Secure, complimentary parking on site</p></div>
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-concierge-bell"></i></div><h4>24/7 Service</h4><p>Round-the-clock guest assistance</p></div>
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-swimming-pool"></i></div><h4>Swimming Pool</h4><p>Outdoor pool with sun deck &amp; loungers</p></div>
+    <div class="amen-card reveal"><div class="amen-icon"><i class="fas fa-plane-arrival"></i></div><h4>Airport Pickup</h4><p>Hassle-free transfers on request</p></div>
+  </div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section id="whyus">
+  <div class="whyus-header reveal">
+    <span class="sec-label">Why Kwathu</span>
+    <h2 class="sec-title">The Kwathu Difference</h2>
+    <p class="sec-sub">We don't just provide rooms — we create memories worth keeping.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-num">01</div>
+      <div class="why-icon"><i class="fas fa-gem"></i></div>
+      <h3>Affordable Luxury</h3>
+      <p>World-class comfort at prices that respect your budget. Luxury shouldn't be a privilege.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">02</div>
+      <div class="why-icon"><i class="fas fa-heart"></i></div>
+      <h3>Friendly Staff</h3>
+      <p>Our team is family. Warm, attentive, and always ready to go the extra mile for you.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">03</div>
+      <div class="why-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <h3>Prime Location</h3>
+      <p>Centrally located in Lilongwe — minutes from business, shopping, and cultural hubs.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">04</div>
+      <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Clean &amp; Safe</h3>
+      <p>Rigorous cleanliness standards and 24/7 security so you can rest completely at ease.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <span class="sec-label">Gallery</span>
+    <h2 class="sec-title">A Glimpse of Kwathu</h2>
+    <p class="sec-sub" style="margin:0 auto;">Pictures say a thousand words. Here's a few thousand reasons to visit.</p>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop" alt="Hotel exterior" loading="lazy"/>
+      <div class="g-overlay"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&auto=format&fit=crop" alt="Restaurant" loading="lazy"/>
+      <div class="g-overlay"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&auto=format&fit=crop" alt="Pool area" loading="lazy"/>
+      <div class="g-overlay"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&auto=format&fit=crop" alt="Lobby" loading="lazy"/>
+      <div class="g-overlay"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&auto=format&fit=crop" alt="Room view" loading="lazy"/>
+      <div class="g-overlay"><i class="fas fa-expand"></i></div>
+    </div>
+  </div>
+  <div class="gallery-cta reveal">
+    <a href="#contact" class="btn-primary">View Full Gallery</a>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="testi-header reveal">
+    <span class="sec-label">Guest Reviews</span>
+    <h2 class="sec-title">What Our Guests Say</h2>
+    <p class="sec-sub" style="margin:0 auto;">Don't take our word for it — hear from the people who matter most.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+      <p>"Staying at Kwathu was the highlight of my trip to Malawi. The staff made me feel like royalty — genuinely warm and so attentive. The room was spotless and beautifully designed. I will absolutely be back."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AM</div>
+        <div class="testi-author-info"><strong>Amara Mensah</strong><span>Business Traveller, Ghana</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+      <p>"The best value for money hotel I've stayed in across Africa. The food was incredible — authentic and full of flavour. Kwathu truly means 'ours', and it really does feel that way. Highly recommend to anyone visiting Lilongwe."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">JK</div>
+        <div class="testi-author-info"><strong>James Kamau</strong><span>Tourist, Kenya</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+      <p>"Our family had an amazing stay. The pool kept the kids happy all day and the team was so accommodating with our requests. Clean, safe, and central — exactly what we needed. We'll definitely return next year."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SC</div>
+        <div class="testi-author-info"><strong>Sophie Chirwa</strong><span>Family Vacation, Zambia</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA BAND ═══ -->
+<section id="cta-band">
+  <div class="cta-content reveal">
+    <span class="sec-label" style="color:var(--gold-lt)">Limited Availability</span>
+    <h2>Ready to Experience<br>Comfort at <span>Kwathu?</span></h2>
+    <p>Book directly with us for the best rates, guaranteed. Your perfect stay is just one click away.</p>
+    <a href="#contact" class="btn-primary" style="font-size:1rem;padding:16px 48px;">Book Your Stay Now</a>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <span class="sec-label">Get In Touch</span>
+      <h2>We're Here<br>For You</h2>
+      <p>Have a question or ready to book? Reach out and our team will get back to you within the hour.</p>
+      <ul class="contact-list">
+        <li>
+          <div class="c-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="c-detail"><strong>Address</strong><span>Area 3, City Centre, Lilongwe, Malawi</span></div>
+        </li>
+        <li>
+          <div class="c-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="c-detail"><strong>Phone</strong><span>+265 (0) 999 000 111</span></div>
+        </li>
+        <li>
+          <div class="c-icon"><i class="fas fa-envelope"></i></div>
+          <div class="c-detail"><strong>Email</strong><span>reservations@kwathuhotel.mw</span></div>
+        </li>
+        <li>
+          <div class="c-icon"><i class="fas fa-clock"></i></div>
+          <div class="c-detail"><strong>Reception Hours</strong><span>Open 24 Hours, 7 Days a Week</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="map-placeholder">
+        <div class="map-label">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Kwathu Hotel, Lilongwe</span>
+          <a href="#" style="color:var(--gold-lt);font-size:.82rem;margin-top:.3rem;"><i class="fas fa-external-link-alt" style="margin-right:4px;"></i>Open in Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Kw<span>athu</span></a>
+      <p>Feel at home at Kwathu — Lilongwe's premier destination for warmth, luxury, and authentic Malawian hospitality since 2012.</p>
+      <div class="socials">
+        <a href="#" class="soc-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="soc-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="soc-link"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" class="soc-link"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#rooms">Rooms</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#amenities">Services</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">+265 (0) 999 000 111</a></li>
+        <li><a href="#">reservations@kwathuhotel.mw</a></li>
+        <li><a href="#">Area 3, Lilongwe</a></li>
+        <li><a href="#">24/7 Reception</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Kwathu Hotel. All rights reserved.</p>
+    <p>Designed with <i class="fas fa-heart" style="color:var(--gold);"></i> in Malawi</p>
+  </div>
+</footer>
+
+<script>
+  // ── Sticky Navbar ──────────────────────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Hamburger Menu ─────────────────────────────────────
+  const ham = document.getElementById('ham');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  ham.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mob-link').forEach(l => {
+    l.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // ── Scroll Reveal ──────────────────────────────────────
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── Smooth scroll for all anchor links ────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
